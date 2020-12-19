@@ -1,19 +1,21 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   Text,
   View,
   TextInput,
   TouchableOpacity,
-  Image
+  Alert
 } from 'react-native'
 import { Context } from '../../store'
 
 import Colors from '../../constants/Colors'
 import {login} from '../../actions/LoginActions'
 import styles from './styles'
+import Spinner from 'react-native-loading-spinner-overlay'
 
 const Login = (props) => {
   const { store, dispatch } = useContext(Context)
+  const [spinner, setSpinner] = useState(false)
 
   handleChangeEmail = (email) => {
     dispatch({
@@ -42,8 +44,7 @@ const Login = (props) => {
     }
   }
 
-  handleLogin = () => {
-    // console.log('** handleLogin: ', store)
+  handleLogin = async () => {
     const { navigation } = props
     const credentials = {
       email: store.email,
@@ -58,24 +59,40 @@ const Login = (props) => {
       personalData: response.data
     })
 
-    login({navigation, credentials})
+    try {
+      setSpinner(true)
+      await login({navigation, credentials})
+      setSpinner(false)
+    } catch (e){
+      console.log('e: ', e)
+      Alert.alert(
+        'Error',
+        'Hubo un error al iniciar sesion',
+        [
+          {
+            text: 'Aceptar',
+            onPress: () => {
+              console.log('correct')
+              setSpinner(false)
+            }
+          }
+        ]
+      )
+    }
   }
-
-  handleSignUp = () => {
-    props.navigation.navigate('SignUp')
-  }
-
   
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.tinyLogo}
-        source={require('../../../assets/logo.png')}
+      <Spinner
+        visible={spinner}
+        textContent={'Cargando...'}
+        textStyle={styles.spinnerTextStyle}
       />
+      <Text style={styles.logo}>Muebleria</Text>
       <View style={styles.inputView}>
         <TextInput
           style={styles.inputText}
-          placeholder='Email...'
+          placeholder='Usuario...'
           placeholderTextColor={Colors.darkBlue}
           onChangeText={handleChangeEmail}
         />
@@ -89,17 +106,12 @@ const Login = (props) => {
           onChangeText={handleChangePassword}
         />
       </View>
-      <TouchableOpacity>
-        <Text style={styles.forgot}>¿Olvidaste tu contraseña?</Text>
-      </TouchableOpacity>
+      
       <TouchableOpacity
         style={styles.loginBtn}
         onPress={handleLogin}
       >
         <Text style={styles.loginText}>Iniciar</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSignUp}>
-        <Text style={styles.optsText}>Registrar</Text>
       </TouchableOpacity>
     </View>
   )
