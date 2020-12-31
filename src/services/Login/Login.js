@@ -1,5 +1,11 @@
 import axios from 'axios'
 
+// Prod
+const URL = 'http://ecommerceeasy.club:8085'
+
+// Local
+// const URL = 'http://192.168.1.78:8085'
+
 export const LoginService = async ({email, password}) => {
   console.log('.... calling Login: ', email, password)
   const requestOptions = {
@@ -8,6 +14,6 @@ export const LoginService = async ({email, password}) => {
     data: JSON.stringify({ userName: email, password })
   }
 
-  const { data: user } = await axios('http://192.168.1.78:8085/api/v1/usuarios/auth', requestOptions)
+  const { data: user } = await axios(`${URL}/api/v1/usuarios/auth`, requestOptions)
   return user
 }

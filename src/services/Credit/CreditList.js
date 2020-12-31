@@ -1,6 +1,12 @@
 import axios from 'axios'
 import {authHeader} from '../../utils/utils'
 
+// Prod
+const URL = 'http://ecommerceeasy.club:8085'
+
+// Local
+// const URL = 'http://192.168.1.78:8085'
+
 const CreditListService = async () => {
   console.log('.... calling CreditListService: ')
   const headers = await authHeader()
@@ -9,7 +15,7 @@ const CreditListService = async () => {
     headers
   }
   // console.log('==== requestOptions: ', requestOptions)
-  const response = await axios('http://192.168.1.78:8085/api/v1/sales_credit', requestOptions)
+  const response = await axios(`${URL}/api/v1/sales_credit`, requestOptions)
   return response
 }
 
@@ -21,7 +27,7 @@ const PaymentsService = async (saleCreditId) => {
     headers
   }
   
-  const response = await axios(`http://192.168.1.78:8085/api/v1/payments/${saleCreditId}`, requestOptions)
+  const response = await axios(`${URL}/api/v1/payments/${saleCreditId}`, requestOptions)
   return response
 }
 
