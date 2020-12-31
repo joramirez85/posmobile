@@ -8,7 +8,7 @@ import styles from './styles'
 
 const handleItemSelected = (params) => {
   console.log('props: ',  params)
-  params.navigation.navigate('ServiceDetails', params)
+  // params.navigation.navigate('ServiceDetails')
 }
 
 export default (props) => (
@@ -18,30 +18,31 @@ export default (props) => (
   >
     <View style={styles.titleView}>
       <Text
-        style={styles.title}
+        style={styles.address}
         numberOfLines={1}
         ellipsizeMode='tail'
       >
-        {props.customer}
+        Monto A Pagar: ${props.amountPayment}
       </Text>
       <Text
         style={styles.address}
         numberOfLines={1}
         ellipsizeMode='tail'
       >
-        {props.city}
+        Fecha a Pagar: {props.datePayment}
       </Text>
-    </View>
-    <View style={styles.rightContainer}>
       <Text
-        style={styles.saleDate}
+        style={styles.address}
         numberOfLines={1}
         ellipsizeMode='tail'
       >
-        {props.saleDate}
+        Fecha Reagendada: {props.paymentRescheduledDate}
       </Text>
+      
+    </View>
+    <View style={styles.rightContainer}>
       <View style={styles.detailsContainer}>
-        <Text style={styles.details}>Ver Detalles</Text>
+        <Text style={styles.details}>Abonar</Text>
       </View>
     </View>
   </TouchableOpacity>

@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   Alert
 } from 'react-native'
-import { Context } from '../../store'
 
+import { Context } from '../../store'
 import Colors from '../../constants/Colors'
 import {login} from '../../actions/LoginActions'
 import styles from './styles'
@@ -31,33 +31,12 @@ const Login = (props) => {
     })
   }
 
-  const simulateLogin = () => {
-    return {
-      data: {
-        name: 'Omar',
-        lastname: 'Ramirez',
-        address: 'San Lucas, 5, San Antonio Tomatlan',
-        email: 'test@test.com',
-        phone: '123456'
-      },
-      status: 200
-    }
-  }
-
   handleLogin = async () => {
     const { navigation } = props
     const credentials = {
       email: store.email,
       password: store.password
     }
-
-    // login request
-    const response = simulateLogin()
-    // console.log('==== response: ', response)
-    dispatch({
-      type: 'setPersonalData',
-      personalData: response.data
-    })
 
     try {
       setSpinner(true)
@@ -72,7 +51,6 @@ const Login = (props) => {
           {
             text: 'Aceptar',
             onPress: () => {
-              console.log('correct')
               setSpinner(false)
             }
           }
