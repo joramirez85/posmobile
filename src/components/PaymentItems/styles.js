@@ -6,8 +6,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: Colors.darkModerateBlue,
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingTop: 10,
+    paddingBottom: 30,
     paddingLeft: 10,
     paddingRight: 10,
     marginVertical: 8,
@@ -18,13 +18,8 @@ const styles = StyleSheet.create({
     minWidth: 200,
     height: 40
   },
-  title: {
-    fontSize: 16,
-    color: Colors.white,
-    height: 30
-  },
   details: {
-    fontSize: 12,
+    fontSize: 14,
     color: Colors.white
   },
   detailsContainer: {
@@ -35,7 +30,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginTop: 5,
     height: 40,
-    width: 90
+    width: 70
   },
   saleDate: {
     fontSize: 12,
@@ -43,8 +38,9 @@ const styles = StyleSheet.create({
   },
   address: {
     fontSize: 12,
+    // backgroundColor: Colors.ORANGE_BKY,
     color: Colors.white,
-    height: 40
+    height: 20
   },
   rightContainer: {
     flex: 1,

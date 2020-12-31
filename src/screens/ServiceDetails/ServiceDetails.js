@@ -1,65 +1,92 @@
-import React, {Component} from 'react'
-import moment from 'moment'
+import React, { useState, useEffect } from 'react'
 import {
-  Text,
   View,
-  TouchableOpacity,
+  FlatList
 } from 'react-native'
 
 import styles from './styles'
-import Colors from '../../constants/Colors'
+import { CircularButton } from '../../components/atoms/'
+import { ChevronLeftIcon } from '../../components/Icons'
+import RenderItem from '../../components/PaymentItems/PaymentItems'
+import { viewPort } from '../../utils/utils'
+import { PaymentsService } from '../../services/Credit/CreditList'
+import { formatCurrentDate, numberFormat } from '../../utils/utils'
 
-export default class ServiceDetails extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      customer: 'Maria Luisa Garcia Vargas',
-      date: '29/07/2020',
-      initTime: '12:30 PM',
-      finishTime: '02:30 PM',
-      instructions: 'Limpieza de cuartos',
-      address: 'Castilla 209, Campos Verdes'
+const ServiceDetails = (props) => {
+  const [data, setData] = useState(false)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const payments = await PaymentsService(props.route.params.saleCreditId)
+        setData(mapData(payments))
+      } catch (error) {
+        console.log('== Error - PaymentsService: ', error)
+      }
     }
+
+    fetchData()
+  }, [])
+
+  const mapData = (payments) => {
+    return payments.data.payments.map(data => {
+      console.log('===== data: ', data)
+      return {
+        datePayment: formatCurrentDate(data.paymentDate),
+        amountPayment: numberFormat(data.paymentAmount, 2),
+        paymentRescheduledDate: data.paymentRescheduledDate ? formatCurrentDate(data.paymentRescheduledDate) : '-',
+        id: data._id
+      }
+    })
   }
 
-  handleAccept = () => {}
-
-  handleCancel = () => {}
-
-  render () {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>{this.state.customer}</Text>
-        <View style={styles.infoView}>
-          <Text style={styles.labelText}>Direccion: {this.state.address}</Text>
-        </View>
-        <View style={styles.infoView}>
-          <Text style={styles.labelText}>Fecha: {this.state.date}</Text>
-        </View>
-        <View style={styles.infoView}>
-          <Text style={styles.labelText}>Hora de Inicio: {this.state.initTime}</Text>
-        </View>
-        <View style={styles.infoView}>
-          <Text style={styles.labelText}>Hora de Finalizacion: {this.state.finishTime}</Text>
-        </View>
-        <View style={styles.infoView}>
-          <Text style={styles.labelText}>Indicaciones: {this.state.instructions}</Text>
-        </View>
-        <View style={styles.containerButtons}>
-          <TouchableOpacity
-            style={styles.acceptBtn}
-            onPress={this.handleAccept}
-          >
-            <Text style={styles.optionText}>Aceptar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.cancelBtn}
-            onPress={this.handleCancel}
-          >
-            <Text style={styles.optionText}>Cancelar</Text>
-          </TouchableOpacity>
-        </View>
+  return (
+    <>
+      <FlatList
+        data={data}
+        renderItem={item => {
+          
+          console.log('kjashdjahsdjkdhaskjdhaskjdasjdkdh item: ', item)
+          return (
+          <RenderItem 
+            item={item}
+            navigation={props.navigation}
+          />
+        )}
+      }
+        keyExtractor={item => item.id}
+      />
+      <View
+        style={{
+          flexDirection: 'row',
+          marginTop: 20,
+          marginBottom: 14,
+          justifyContent: 'center',
+          alignSelf: 'center',
+          
+        }}>
+        <CircularButton
+          onPress={() => { console.log('one') }}
+          title="Productos"
+          icon={<ChevronLeftIcon />}
+          size={viewPort(60).width}
+          lg
+        />
+        <CircularButton
+          onPress={() => console.log('two')}
+          title="Detalles"
+          size={viewPort(60).width}
+          lg
+        />
+        <CircularButton
+          onPress={() => console.log('three')}
+          title="Agregar Abono"
+          size={viewPort(60).width}
+          lg
+        />
       </View>
-    )
-  }
+    </>
+  )
 }
+
+export default ServiceDetails

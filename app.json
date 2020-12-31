@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MotoServicio",
-    "slug": "clean-house",
+    "name": "Muebleria",
+    "slug": "muebleria",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,10 +18,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.innomich.motoservice",
-      "config": {
-        "googleMapsApiKey": "AIzaSyA_wsEDxcFum1AATFFGf3lhKvdqsX7DyW0"
-      }
+      "bundleIdentifier": "com.innomich.muebleria"
     },
     "web": {
       "favicon": "./assets/favicon.png"
