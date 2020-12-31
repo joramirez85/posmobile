@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import {
   View,
-  FlatList
+  FlatList,
+  Text
 } from 'react-native'
 
 import styles from './styles'
@@ -11,17 +12,23 @@ import RenderItem from '../../components/PaymentItems/PaymentItems'
 import { viewPort } from '../../utils/utils'
 import { PaymentsService } from '../../services/Credit/CreditList'
 import { formatCurrentDate, numberFormat } from '../../utils/utils'
+import Spinner from 'react-native-loading-spinner-overlay'
 
 const ServiceDetails = (props) => {
   const [data, setData] = useState(false)
+  const [spinner, setSpinner] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log('== props.route.params: ', props.route.params)
       try {
+        setSpinner(true)
         const payments = await PaymentsService(props.route.params.saleCreditId)
         setData(mapData(payments))
       } catch (error) {
         console.log('== Error - PaymentsService: ', error)
+      } finally {
+        setSpinner(false)
       }
     }
 
@@ -30,7 +37,6 @@ const ServiceDetails = (props) => {
 
   const mapData = (payments) => {
     return payments.data.payments.map(data => {
-      console.log('===== data: ', data)
       return {
         datePayment: formatCurrentDate(data.paymentDate),
         amountPayment: numberFormat(data.paymentAmount, 2),
@@ -42,18 +48,28 @@ const ServiceDetails = (props) => {
 
   return (
     <>
+    <Spinner
+          visible={spinner}
+          textContent={'Cargando...'}
+        />
+      <Text
+      style={styles.title}
+      >
+        Cliente: <Text style={styles.customerName}> {props.route.params.customer} </Text>
+      </Text>
+      <Text
+      style={styles.title}
+      >
+        Ciudad: <Text style={styles.customerName}> {props.route.params.city} </Text>
+      </Text>
       <FlatList
         data={data}
-        renderItem={item => {
-          
-          console.log('kjashdjahsdjkdhaskjdhaskjdasjdkdh item: ', item)
-          return (
+        renderItem={item => (
           <RenderItem 
             item={item}
             navigation={props.navigation}
           />
         )}
-      }
         keyExtractor={item => item.id}
       />
       <View
