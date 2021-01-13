@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   titleView: {
     width: '70%',
     minWidth: 200,
-    height: 40
+    height: 48
   },
   details: {
     fontSize: 14,
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginTop: 5,
     height: 40,
-    width: 70
+    width: 95
   },
   saleDate: {
     fontSize: 12,
@@ -40,6 +40,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     // backgroundColor: Colors.ORANGE_BKY,
     color: Colors.white,
+    height: 20
+  },
+  status: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: Colors.ORANGE_BKY,
     height: 20
   },
   rightContainer: {
