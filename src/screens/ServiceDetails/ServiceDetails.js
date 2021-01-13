@@ -7,7 +7,7 @@ import {
 
 import styles from './styles'
 import { CircularButton } from '../../components/atoms/'
-import { ChevronLeftIcon } from '../../components/Icons'
+import { FontAwesome, MaterialCommunityIcons, Entypo } from '@expo/vector-icons'
 import RenderItem from '../../components/PaymentItems/PaymentItems'
 import { viewPort } from '../../utils/utils'
 import { PaymentsService } from '../../services/Credit/CreditList'
@@ -20,7 +20,7 @@ const ServiceDetails = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('== props.route.params: ', props.route.params)
+      // console.log('== props.route.params: ', props.route.params)
       try {
         setSpinner(true)
         const payments = await PaymentsService(props.route.params.saleCreditId)
@@ -41,7 +41,9 @@ const ServiceDetails = (props) => {
         datePayment: formatCurrentDate(data.paymentDate),
         amountPayment: numberFormat(data.paymentAmount, 2),
         paymentRescheduledDate: data.paymentRescheduledDate ? formatCurrentDate(data.paymentRescheduledDate) : '-',
-        id: data._id
+        id: data._id,
+        isPaid: data.isPaid,
+        isRescheduled: data.isRescheduled
       }
     })
   }
@@ -84,19 +86,21 @@ const ServiceDetails = (props) => {
         <CircularButton
           onPress={() => { console.log('one') }}
           title="Productos"
-          icon={<ChevronLeftIcon />}
+          icon={<FontAwesome name='product-hunt' size={24} color="black" />}
           size={viewPort(60).width}
           lg
         />
         <CircularButton
           onPress={() => console.log('two')}
           title="Detalles"
+          icon={<MaterialCommunityIcons name="details" size={24} color="black" />}
           size={viewPort(60).width}
           lg
         />
         <CircularButton
           onPress={() => console.log('three')}
           title="Agregar Abono"
+          icon={<Entypo name="add-to-list" size={24} color="black" />}
           size={viewPort(60).width}
           lg
         />

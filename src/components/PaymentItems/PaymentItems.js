@@ -7,5 +7,6 @@ export default ({item, navigation}) => (
     amountPayment={item.item.amountPayment}
     datePayment={item.item.datePayment}
     paymentRescheduledDate={item.item.paymentRescheduledDate}
+    item={item}
   />
 )

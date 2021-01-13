@@ -20,7 +20,7 @@ const CreditListService = async () => {
 }
 
 const PaymentsService = async (saleCreditId) => {
-  console.log('.... calling PaymentsService: ')
+  // console.log('.... calling PaymentsService: ')
   const headers = await authHeader()
   const requestOptions = {
     method: 'GET',
