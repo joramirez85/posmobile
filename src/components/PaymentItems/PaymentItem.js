@@ -6,9 +6,14 @@ import {
 } from 'react-native'
 import styles from './styles'
 
-const handleItemSelected = ({item}) => {
-  console.log('props: ',  item.id)
-  // params.navigation.navigate('ServiceDetails')
+const handleItemSelected = ({ item }, props, type = 'abono') => {
+  console.log('item: ',  item, ' ID: ', item.id)
+  console.log('props: ', props)
+  const params = {
+    type,
+    item
+  }
+  props.navigation.navigate('PaymentUpdate', params)
 }
 
 const defineStatus = (item) => {
@@ -23,11 +28,35 @@ const defineStatus = (item) => {
   return status
 }
 
-const defineAction =(item) => {
-  if (item.item.isPaid) {
-    return 'Reagendar'
+const defineAction =(item, props) => {
+  if (!item.item.isPaid) {
+    return (
+      <View style={styles.detailsContainer}>
+        <TouchableOpacity
+          style={styles.btnAction}
+          onPress={() => handleItemSelected(item, props, 'abono')}
+        >
+          <Text style={styles.details}>Abonar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btnAction}
+          onPress={() => handleItemSelected(item, props, 'reagendar')}
+        >
+          <Text style={styles.details}>Reagendar</Text>
+        </TouchableOpacity>
+      </View>
+    )
   } else {
-    return 'Actualizar'
+    return (
+      <View style={styles.detailsContainer}>
+        <TouchableOpacity
+          style={styles.btnAction}
+          onPress={() => handleItemSelected(item, props, 'actualizar')}
+        >
+          <Text style={styles.details}>Actualizar</Text>
+        </TouchableOpacity>
+      </View>
+    )
   }
 }
 
@@ -65,13 +94,7 @@ export default (props) => (
       </Text>
     </View>
     <View style={styles.rightContainer}>
-      <View style={styles.detailsContainer}>
-        <TouchableOpacity
-        onPress={() => handleItemSelected(props.item)}
-        >
-          <Text style={styles.details}>{defineAction(props.item)}</Text>
-        </TouchableOpacity>
-      </View>
+      {defineAction(props.item, props)}
     </View>
   </View>
 )

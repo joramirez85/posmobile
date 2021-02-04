@@ -17,6 +17,7 @@ import Spinner from 'react-native-loading-spinner-overlay'
 const ServiceDetails = (props) => {
   const [data, setData] = useState(false)
   const [spinner, setSpinner] = useState(false)
+  const [totalPaidPayments, setTotalPaidPayments] = useState({})
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +25,9 @@ const ServiceDetails = (props) => {
       try {
         setSpinner(true)
         const payments = await PaymentsService(props.route.params.saleCreditId)
+        // console.log('===== ***** payments: ', payments)
         setData(mapData(payments))
+        setTotalPaidPayments(payments.data.totalPaidPayments)
       } catch (error) {
         console.log('== Error - PaymentsService: ', error)
       } finally {
@@ -46,6 +49,18 @@ const ServiceDetails = (props) => {
         isRescheduled: data.isRescheduled
       }
     })
+  }
+
+  const showDetails = () => {
+    console.log('jhajkshdjkashdjksa props.props.route.params.item: ', props.route.params.item)
+    const params = {
+      type: 'details',
+      customer: props.route.params.customer,
+      city: props.route.params.city,
+      totalPaidPayments,
+      item: props.route.params.item
+    }
+    props.navigation.navigate('PaymentUpdate', params)
   }
 
   return (
@@ -84,14 +99,7 @@ const ServiceDetails = (props) => {
           
         }}>
         <CircularButton
-          onPress={() => { console.log('one') }}
-          title="Productos"
-          icon={<FontAwesome name='product-hunt' size={24} color="black" />}
-          size={viewPort(60).width}
-          lg
-        />
-        <CircularButton
-          onPress={() => console.log('two')}
+          onPress={() => showDetails()}
           title="Detalles"
           icon={<MaterialCommunityIcons name="details" size={24} color="black" />}
           size={viewPort(60).width}
