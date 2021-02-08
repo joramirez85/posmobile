@@ -7,6 +7,7 @@ import {
 
 import styles from './styles'
 import { numberFormat } from '../../utils/utils'
+import ProductItem from '../../components/Products/ProductsItems'
 
 const DetailsPayment = (props) => {
   const {
@@ -84,7 +85,21 @@ const DetailsPayment = (props) => {
         >
           Frecuencia de Pagos: <Text style={styles.customerName}> { frequently } </Text>
         </Text>
+        <Text
+        style={styles.title}
+        >
+          Productos:
+        </Text>
       </View>
+      <FlatList
+        data={products}
+        renderItem={item => (
+          <ProductItem 
+            item={item}
+          />
+        )}
+        keyExtractor={item => item.id}
+      />
     </>
   )
 }

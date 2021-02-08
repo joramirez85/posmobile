@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   titleView: {
     width: '70%',
     minWidth: 200,
-    height: 65
+    height: 70
   },
   details: {
     fontSize: 14,
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 10,
     marginBottom: 5,
-    marginTop: 35,
+    marginTop: 42,
     height: 50,
     width: 95
   },

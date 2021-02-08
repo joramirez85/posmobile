@@ -11,7 +11,8 @@ const handleItemSelected = ({ item }, props, type = 'abono') => {
   console.log('props: ', props)
   const params = {
     type,
-    item
+    item,
+    setReloadFn: props.setReloadFn
   }
   props.navigation.navigate('PaymentUpdate', params)
 }
@@ -60,41 +61,51 @@ const defineAction =(item, props) => {
   }
 }
 
-export default (props) => (
-  <View
-    style={styles.item}
-    onPress={() => handleItemSelected(props)}
-  >
-    <View style={styles.titleView}>
-      <Text
-        style={styles.address}
-        numberOfLines={1}
-        ellipsizeMode='tail'
-      >
-        Monto A Pagar: ${props.amountPayment}
-      </Text>
-      <Text
-        style={styles.address}
-        numberOfLines={1}
-        ellipsizeMode='tail'
-      >
-        Fecha a Pagar: {props.datePayment}
-      </Text>
-      <Text
-        style={styles.address}
-        numberOfLines={1}
-        ellipsizeMode='tail'
-      >
-        Fecha Reagendada: {props.paymentRescheduledDate}
-      </Text>
-      <Text
-        style={styles.address}
-      >
-        Status: <Text style={styles.status}>{defineStatus(props.item)}</Text>
-      </Text>
+export default (props) => {
+  console.log('=== props PaymentItem: ', props)
+  return (
+    <View
+      style={styles.item}
+      onPress={() => handleItemSelected(props)}
+    >
+      <View style={styles.titleView}>
+        <Text
+          style={styles.address}
+          numberOfLines={1}
+          ellipsizeMode='tail'
+        >
+          Monto A Pagar: ${props.amountPayment}
+        </Text>
+        <Text
+          style={styles.address}
+          numberOfLines={1}
+          ellipsizeMode='tail'
+        >
+          Monto Pagado: ${props.paymentAmountPaid}
+        </Text>
+        <Text
+          style={styles.address}
+          numberOfLines={1}
+          ellipsizeMode='tail'
+        >
+          Fecha a Pagar: {props.datePayment}
+        </Text>
+        <Text
+          style={styles.address}
+          numberOfLines={1}
+          ellipsizeMode='tail'
+        >
+          Fecha Reagendada: {props.paymentRescheduledDate}
+        </Text>
+        <Text
+          style={styles.address}
+        >
+          Status: <Text style={styles.status}>{defineStatus(props.item)}</Text>
+        </Text>
+      </View>
+      <View style={styles.rightContainer}>
+        {defineAction(props.item, props)}
+      </View>
     </View>
-    <View style={styles.rightContainer}>
-      {defineAction(props.item, props)}
-    </View>
-  </View>
-)
+  )
+}

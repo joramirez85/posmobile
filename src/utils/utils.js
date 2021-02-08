@@ -29,8 +29,8 @@ const authHeader = async () => {
   }
 }
 
-const formatCurrentDate = (date) => {
-  return moment(date).utc().format('DD/MM/YYYY')
+const formatCurrentDate = (date, format = 'DD/MM/YYYY') => {
+  return moment(date).utc().format(format)
 }
 
 const numberFormat = (number, decimals) => {

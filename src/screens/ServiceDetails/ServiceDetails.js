@@ -18,10 +18,12 @@ const ServiceDetails = (props) => {
   const [data, setData] = useState(false)
   const [spinner, setSpinner] = useState(false)
   const [totalPaidPayments, setTotalPaidPayments] = useState({})
+  const [reload, setReload] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
       // console.log('== props.route.params: ', props.route.params)
+      console.log('fetchData ServiceDetails')
       try {
         setSpinner(true)
         const payments = await PaymentsService(props.route.params.saleCreditId)
@@ -38,11 +40,37 @@ const ServiceDetails = (props) => {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    const fetchData = async () => {
+      // console.log('== props.route.params: ', props.route.params)
+      console.log('fetchData ServiceDetails')
+      try {
+        setSpinner(true)
+        const payments = await PaymentsService(props.route.params.saleCreditId)
+        // console.log('===== ***** payments: ', payments)
+        setData(mapData(payments))
+        setTotalPaidPayments(payments.data.totalPaidPayments)
+      } catch (error) {
+        console.log('== Error - PaymentsService: ', error)
+      } finally {
+        setSpinner(false)
+      }
+    }
+
+    if (reload) {
+      console.log('ServiceDetails fetching data')
+      fetchData()
+      setReload(false)
+    }
+  }, [reload])
+
   const mapData = (payments) => {
     return payments.data.payments.map(data => {
+      // console.log('000000 data: ', data)
       return {
         datePayment: formatCurrentDate(data.paymentDate),
         amountPayment: numberFormat(data.paymentAmount, 2),
+        paymentAmountPaid: data.paymentAmountPaid > 0 ? data.paymentAmountPaid : 0,
         paymentRescheduledDate: data.paymentRescheduledDate ? formatCurrentDate(data.paymentRescheduledDate) : '-',
         id: data._id,
         isPaid: data.isPaid,
@@ -85,6 +113,7 @@ const ServiceDetails = (props) => {
           <RenderItem 
             item={item}
             navigation={props.navigation}
+            setReloadFn={setReload}
           />
         )}
         keyExtractor={item => item.id}
