@@ -95,6 +95,13 @@ export default (props) => {
           numberOfLines={1}
           ellipsizeMode='tail'
         >
+          Fecha Pagado: {props.item.item.paymentPaidDate}
+        </Text>
+        <Text
+          style={styles.address}
+          numberOfLines={1}
+          ellipsizeMode='tail'
+        >
           Fecha Reagendada: {props.paymentRescheduledDate}
         </Text>
         <Text

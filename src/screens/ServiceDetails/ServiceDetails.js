@@ -66,7 +66,7 @@ const ServiceDetails = (props) => {
 
   const mapData = (payments) => {
     return payments.data.payments.map(data => {
-      // console.log('000000 data: ', data)
+      console.log('000000 data: ', data)
       return {
         datePayment: formatCurrentDate(data.paymentDate),
         amountPayment: numberFormat(data.paymentAmount, 2),
@@ -74,7 +74,8 @@ const ServiceDetails = (props) => {
         paymentRescheduledDate: data.paymentRescheduledDate ? formatCurrentDate(data.paymentRescheduledDate) : '-',
         id: data._id,
         isPaid: data.isPaid,
-        isRescheduled: data.isRescheduled
+        isRescheduled: data.isRescheduled,
+        paymentPaidDate: data.paymentPaidDate ? formatCurrentDate(data.paymentPaidDate) : '-' // data.paymentPaidDate
       }
     })
   }
