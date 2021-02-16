@@ -53,7 +53,41 @@ const styles = StyleSheet.create({
   },
   dateComponent: {
     height: 50
-  }
+  },
+  btnDate: {
+    marginTop: 25
+  },
+
+  /*dateContainer: {
+    position: 'absolute',
+    width,
+    height,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    zIndex: 20000,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  date: {
+    backgroundColor: '#FFFFFF',
+    width: '92%',
+    height: '15%',
+    borderRadius: 10,
+    paddingHorizontal: 15,
+  }, */
+
+  inputDate: {
+    height: 50,
+    color: Colors.blue,
+  },
+  dateBtn: {
+    width: '95%',
+    backgroundColor: Colors.blue,
+    borderRadius: 25,
+    height: 50,
+    marginBottom: 30,
+    marginLeft: 8,
+    paddingLeft: 15
+  },
 })
 
 export default styles
