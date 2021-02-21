@@ -17,14 +17,19 @@ import Spinner from 'react-native-loading-spinner-overlay'
 const ServiceDetails = (props) => {
   const [data, setData] = useState(false)
   const [spinner, setSpinner] = useState(false)
+  const [totalPaidPayments, setTotalPaidPayments] = useState({})
+  const [reload, setReload] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
       // console.log('== props.route.params: ', props.route.params)
+      console.log('fetchData ServiceDetails')
       try {
         setSpinner(true)
         const payments = await PaymentsService(props.route.params.saleCreditId)
+        // console.log('===== ***** payments: ', payments)
         setData(mapData(payments))
+        setTotalPaidPayments(payments.data.totalPaidPayments)
       } catch (error) {
         console.log('== Error - PaymentsService: ', error)
       } finally {
@@ -35,17 +40,56 @@ const ServiceDetails = (props) => {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    const fetchData = async () => {
+      // console.log('== props.route.params: ', props.route.params)
+      console.log('fetchData ServiceDetails')
+      try {
+        setSpinner(true)
+        const payments = await PaymentsService(props.route.params.saleCreditId)
+        // console.log('===== ***** payments: ', payments)
+        setData(mapData(payments))
+        setTotalPaidPayments(payments.data.totalPaidPayments)
+      } catch (error) {
+        console.log('== Error - PaymentsService: ', error)
+      } finally {
+        setSpinner(false)
+      }
+    }
+
+    if (reload) {
+      console.log('ServiceDetails fetching data')
+      fetchData()
+      setReload(false)
+    }
+  }, [reload])
+
   const mapData = (payments) => {
     return payments.data.payments.map(data => {
+      console.log('000000 data: ', data)
       return {
         datePayment: formatCurrentDate(data.paymentDate),
         amountPayment: numberFormat(data.paymentAmount, 2),
+        paymentAmountPaid: data.paymentAmountPaid > 0 ? data.paymentAmountPaid : 0,
         paymentRescheduledDate: data.paymentRescheduledDate ? formatCurrentDate(data.paymentRescheduledDate) : '-',
         id: data._id,
         isPaid: data.isPaid,
-        isRescheduled: data.isRescheduled
+        isRescheduled: data.isRescheduled,
+        paymentPaidDate: data.paymentPaidDate ? formatCurrentDate(data.paymentPaidDate) : '-' // data.paymentPaidDate
       }
     })
+  }
+
+  const showDetails = () => {
+    console.log('jhajkshdjkashdjksa props.props.route.params.item: ', props.route.params.item)
+    const params = {
+      type: 'details',
+      customer: props.route.params.customer,
+      city: props.route.params.city,
+      totalPaidPayments,
+      item: props.route.params.item
+    }
+    props.navigation.navigate('PaymentUpdate', params)
   }
 
   return (
@@ -70,6 +114,7 @@ const ServiceDetails = (props) => {
           <RenderItem 
             item={item}
             navigation={props.navigation}
+            setReloadFn={setReload}
           />
         )}
         keyExtractor={item => item.id}
@@ -84,14 +129,7 @@ const ServiceDetails = (props) => {
           
         }}>
         <CircularButton
-          onPress={() => { console.log('one') }}
-          title="Productos"
-          icon={<FontAwesome name='product-hunt' size={24} color="black" />}
-          size={viewPort(60).width}
-          lg
-        />
-        <CircularButton
-          onPress={() => console.log('two')}
+          onPress={() => showDetails()}
           title="Detalles"
           icon={<MaterialCommunityIcons name="details" size={24} color="black" />}
           size={viewPort(60).width}

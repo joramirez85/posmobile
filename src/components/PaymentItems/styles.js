@@ -16,20 +16,21 @@ const styles = StyleSheet.create({
   titleView: {
     width: '70%',
     minWidth: 200,
-    height: 48
+    height: 90
   },
   details: {
     fontSize: 14,
-    color: Colors.white
+    color: Colors.white,
+    textAlign: 'center'
   },
   detailsContainer: {
-    backgroundColor: Colors.ORANGE_BKY,
+    // backgroundColor: Colors.ORANGE_BKY,
     alignContent: 'center',
     justifyContent: 'center',
     paddingLeft: 10,
     marginBottom: 5,
-    marginTop: 5,
-    height: 40,
+    marginTop: 42,
+    height: 50,
     width: 95
   },
   saleDate: {
@@ -55,6 +56,14 @@ const styles = StyleSheet.create({
     width: '30%',
     minWidth: 55,
     height: 40
+  },
+  btnAction: {
+    justifyContent: 'center',
+    // alignContent: 'center',
+    backgroundColor: Colors.ORANGE_BKY,
+    height: 40,
+    width: 90,
+    marginTop: 12
   }
 })
 

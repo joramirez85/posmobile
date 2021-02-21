@@ -29,15 +29,25 @@ const authHeader = async () => {
   }
 }
 
-const formatCurrentDate = (date) => {
-  return moment(date).utc().format('DD/MM/YYYY')
+const formatCurrentDate = (date, format = 'DD/MM/YYYY') => {
+  return moment(date).utc().format(format)
 }
 
 const numberFormat = (number, decimals) => {
   if (number) {
     return number.toFixed(decimals)
   }
-  return ''
+  return '0'
+}
+
+const transformFrequently = (frequently) => {
+  if (frequently === 1) {
+    return 'Mensual'
+  } else if (frequently === 0.5) {
+    return 'Quincenal'
+  } else {
+    return 'Semanal'
+  }
 }
 
 export {
@@ -45,5 +55,6 @@ export {
   formatCurrentDate,
   viewPort,
   textViewPort,
-  numberFormat
+  numberFormat,
+  transformFrequently
 }

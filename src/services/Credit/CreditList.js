@@ -5,7 +5,7 @@ import {authHeader} from '../../utils/utils'
 const URL = 'http://ecommerceeasy.club:8085'
 
 // Local
-// const URL = 'http://192.168.1.78:8085'
+// const URL = 'http://192.168.1.81:8085'
 
 const CreditListService = async () => {
   console.log('.... calling CreditListService: ')
@@ -31,7 +31,38 @@ const PaymentsService = async (saleCreditId) => {
   return response
 }
 
+const AmountPaidByDateService = async (startDate, endDate) => {
+  console.log('.... calling AmountPaidByDateService: ')
+  const headers = await authHeader()
+  const requestOptions = {
+    method: 'GET',
+    headers,
+    params: {
+      startDate,
+      endDate
+    }
+  }
+  
+  const response = await axios(`${URL}/api/v1/payments/`, requestOptions)
+  return response
+}
+
+const UpdatePaymentService = async (data) => {
+  console.log('.... calling UpdatePaymentService: ')
+  const headers = await authHeader()
+  const requestOptions = {
+    method: 'PUT',
+    headers,
+    data
+  }
+  
+  const response = await axios(`${URL}/api/v1/payment/${data.id}`, requestOptions)
+  return response
+}
+
 export {
   PaymentsService,
-  CreditListService
+  CreditListService,
+  AmountPaidByDateService,
+  UpdatePaymentService
 }

@@ -7,7 +7,7 @@ import {
 import styles from './styles'
 
 const handleItemSelected = (params) => {
-  console.log('props: ',  params)
+  console.log('props params :: ',  params)
   params.navigation.navigate('ServiceDetails', params)
 }
 

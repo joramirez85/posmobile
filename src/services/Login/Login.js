@@ -4,7 +4,7 @@ import axios from 'axios'
 const URL = 'http://ecommerceeasy.club:8085'
 
 // Local
-// const URL = 'http://192.168.1.78:8085'
+// const URL = 'http://192.168.1.81:8085'
 
 export const LoginService = async ({email, password}) => {
   console.log('.... calling Login: ', email, password)
