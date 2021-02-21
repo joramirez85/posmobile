@@ -43,13 +43,26 @@ const AmountPaidByDateService = async (startDate, endDate) => {
     }
   }
   
-  // console.log('before request: ', `${URL}/api/v1/payments/`, requestOptions)
   const response = await axios(`${URL}/api/v1/payments/`, requestOptions)
+  return response
+}
+
+const UpdatePaymentService = async (data) => {
+  console.log('.... calling UpdatePaymentService: ')
+  const headers = await authHeader()
+  const requestOptions = {
+    method: 'PUT',
+    headers,
+    data
+  }
+  
+  const response = await axios(`${URL}/api/v1/payment/${data.id}`, requestOptions)
   return response
 }
 
 export {
   PaymentsService,
   CreditListService,
-  AmountPaidByDateService
+  AmountPaidByDateService,
+  UpdatePaymentService
 }

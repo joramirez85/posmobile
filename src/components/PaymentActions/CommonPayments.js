@@ -46,7 +46,8 @@ const CommonPayment = (props) => {
   }
 
   const handlePayment = async () => {
-    console.log('Calling handlePayment: ', formatCurrentDate(date, 'YYYY-MM-DD'))
+    console.log('Calling handlePayment - date: ', formatCurrentDate(date, 'YYYY-MM-DD'))
+    console.log('Calling handlePayment - payment: ', payment)
     if (payment === 0) {
       Alert.alert(
         'Campo Vacio',
@@ -74,7 +75,7 @@ const CommonPayment = (props) => {
       try {
         setSpinner(true)
         const response = await props.serviceFn(params)
-        // console.log('response: ', response)
+        console.log('response: ', response)
         props.setReloadFn(true)
         cleanValues()
       } catch(error) {

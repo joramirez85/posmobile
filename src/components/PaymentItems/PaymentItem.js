@@ -62,7 +62,7 @@ const defineAction =(item, props) => {
 }
 
 export default (props) => {
-  console.log('=== props PaymentItem: ', props)
+  // console.log('=== props PaymentItem: ', props)
   return (
     <View
       style={styles.item}
