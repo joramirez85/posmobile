@@ -31,7 +31,25 @@ const PaymentsService = async (saleCreditId) => {
   return response
 }
 
+const AmountPaidByDateService = async (startDate, endDate) => {
+  console.log('.... calling AmountPaidByDateService: ')
+  const headers = await authHeader()
+  const requestOptions = {
+    method: 'GET',
+    headers,
+    params: {
+      startDate,
+      endDate
+    }
+  }
+  
+  // console.log('before request: ', `${URL}/api/v1/payments/`, requestOptions)
+  const response = await axios(`${URL}/api/v1/payments/`, requestOptions)
+  return response
+}
+
 export {
   PaymentsService,
-  CreditListService
+  CreditListService,
+  AmountPaidByDateService
 }

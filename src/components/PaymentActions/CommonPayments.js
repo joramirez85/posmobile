@@ -3,7 +3,9 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert,
+  Button
 } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import Spinner from 'react-native-loading-spinner-overlay'
@@ -12,11 +14,15 @@ import Colors from '../../constants/Colors'
 import {formatCurrentDate} from '../../utils/utils'
 import styles from './styles'
 
+import moment from 'moment'
+
 const CommonPayment = (props) => {
   const [date, setDate] = useState(new Date())
   const [payment, setPayment] = useState(0)
   const [mode, setMode] = useState('date')
   const [spinner, setSpinner] = useState(false)
+  const [show, setShow] = useState(false)
+
   const offset = new Date().getTimezoneOffset() * -1
 
   const handleChangeAmount = (value) => {
@@ -25,33 +31,57 @@ const CommonPayment = (props) => {
   }
 
   const onChangeDate = (event, selectedDate) => {
-    console.log('===== selectedDate: ', selectedDate)
-    setDate(date)
+    console.log('===== selectedDate: ', selectedDate, ' ---- ' , date)
+    const birthDateUTC = moment(selectedDate || date).utc()
+    const birthDateFormat = birthDateUTC.format('YYYY-MM-DD')
+
+    const date = new Date();
+    const offsetInHours = date.getTimezoneOffset() / 30
+
+    console.log('birthDateUTC.toDate(): ', birthDateUTC.add(offsetInHours, 'h').toDate())
+
+
+    setShow(Platform.OS === 'ios')
+    setDate(selectedDate)
   }
 
   const handlePayment = async () => {
-    console.log('Calling handlePayment')
-
-    const params = {
-      paymentAmountPaid: payment,
-      amountPaidDate: formatCurrentDate(date, 'YYYY-MM-DD'),
-      isPaid: true,
-      isRescheduled: false,
-      id: props.item.id
-    }
-
-    console.log('Params: ', params)
-
-    try {
-      setSpinner(true)
-      const response = await props.serviceFn(params)
-      // console.log('response: ', response)
-      props.setReloadFn(true)
-      cleanValues()
-    } catch(error) {
-      console.log('Error - handlePayment: ', error)
-    } finally {
-      setSpinner(false)
+    console.log('Calling handlePayment: ', formatCurrentDate(date, 'YYYY-MM-DD'))
+    if (payment === 0) {
+      Alert.alert(
+        'Campo Vacio',
+        'Por favor ingresa el abono',
+        [
+          {
+            text: 'Aceptar',
+            onPress: () => {
+              setSpinner(false)
+            }
+          }
+        ]
+      )
+    } else {
+      const params = {
+        paymentAmountPaid: payment,
+        amountPaidDate: formatCurrentDate(date, 'YYYY-MM-DD'),
+        isPaid: true,
+        isRescheduled: false,
+        id: props.item.id
+      }
+  
+      console.log('Params: ', params)
+  
+      try {
+        setSpinner(true)
+        const response = await props.serviceFn(params)
+        // console.log('response: ', response)
+        props.setReloadFn(true)
+        cleanValues()
+      } catch(error) {
+        console.log('Error - handlePayment: ', error)
+      } finally {
+        setSpinner(false)
+      }
     }
   }
 
@@ -60,7 +90,7 @@ const CommonPayment = (props) => {
     setPayment(0)
   }
 
-  console.log('Params props: ', props)
+  // console.log('Params props: ', props)
 
   return (
     <>
@@ -75,7 +105,26 @@ const CommonPayment = (props) => {
         <Text style={styles.title}>
           Fecha:
         </Text>
+        {
+        Platform.OS !== 'ios' &&
+        <TouchableOpacity onPress={() => {
+            console.log('hgfhfhgfhgfhgf:', show)
+            setShow(true)
+          }}
+          style={styles.dateBtn}
+          activeOpacity={0.6}>
+            <TextInput
+              value={formatCurrentDate(date, 'YYYY-MM-DD')}
+              style={styles.inputText}
+              placeholder='Fecha'
+              placeholderTextColor={Colors.white}
+              editable={false}
+            />
+        </TouchableOpacity>
+        }
 
+        {
+        (show || Platform.OS === 'ios') && 
         <View style={styles.dateContainer}>
           <View style={Platform.OS === 'ios' && styles.date}>
             <DateTimePicker
@@ -87,8 +136,22 @@ const CommonPayment = (props) => {
               onChange={onChangeDate}
               timeZoneOffsetInMinutes={offset}
             />
+
+            {/*
+              Platform.OS === 'ios' &&
+              <View style={styles.btnDate}>
+                <TouchableOpacity
+                  style={styles.loginBtn}
+                  onPress={() => setShow(false)}
+                >
+                  <Text style={styles.loginText}> Aceptar </Text>
+                </TouchableOpacity>
+              </View>
+            */}
+
           </View>
         </View>
+        }
 
         <Text style={styles.title}>Abono:</Text>
         <View style={styles.inputView}>

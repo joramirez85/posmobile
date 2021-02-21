@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import {
   SafeAreaView,
-  FlatList
+  FlatList,
+  View
 } from 'react-native'
 
 import styles from './styles'
@@ -10,6 +11,10 @@ import { CreditListService } from '../../services/Credit/CreditList'
 import { formatCurrentDate, transformFrequently } from '../../utils/utils'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { SearchBar } from 'react-native-elements'
+
+import { viewPort } from '../../utils/utils'
+import { CircularButton } from '../../components/atoms'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const PaymentsList = (props) => {
   const [data, setData] = useState(false)
@@ -56,22 +61,25 @@ const PaymentsList = (props) => {
   }
 
   const SearchFilterFunction = (text) => {
-    console.log('text: ', text)
-    
-      const newData = filteredData.filter(function(item) {
-        //console.log(item.customer)
-        const itemData = item.customer ? item.customer.toUpperCase() : ''
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      })
+    const newData = filteredData.filter(function(item) {
+      const itemData = item.customer ? item.customer.toUpperCase() : ''
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    })
 
-      setSearch(text)
-      setData(newData)
-    
+    setSearch(text)
+    setData(newData)
+  }
+
+  const showDetails = () => {
+    const params = {
+      type: 'details'
+    }
+    props.navigation.navigate('PaidPaymentsByDate', params)
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <>
       <Spinner
           visible={spinner}
           textContent={'Cargando...'}
@@ -83,6 +91,14 @@ const PaymentsList = (props) => {
           onClear={text => SearchFilterFunction('')}
           placeholder="Buscar ..."
           value={search}
+
+          inputStyle={{backgroundColor: 'white'}}
+          containerStyle={{
+            backgroundColor: '#1e3d59',
+            justifyContent: 'space-around',
+            borderTopWidth:0,
+            borderBottomWidth:0,
+          }}
         />
       <FlatList
         data={data}
@@ -94,7 +110,24 @@ const PaymentsList = (props) => {
         )}
         keyExtractor={item => item.id}
       />
-    </SafeAreaView>
+      <View
+        style={{
+          flexDirection: 'row',
+          marginTop: 20,
+          marginBottom: 14,
+          justifyContent: 'center',
+          alignSelf: 'center',
+          
+        }}>
+        <CircularButton
+          onPress={() => showDetails()}
+          title="Corte de Caja"
+          icon={<MaterialCommunityIcons name="details" size={24} color="black" />}
+          size={viewPort(60).width}
+          lg
+        />
+      </View>
+    </>
   )
 }
 
