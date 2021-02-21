@@ -32,17 +32,6 @@ const PaidPaymentsByDate = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       console.log('fetchData PaidPaymentsByDate: ', startDate, ' - ', endDate)
-      /* try {
-        setSpinner(true)
-        const amountByDate = await AmountPaidByDateService(startDate, endDate)
-        console.log('===== ***** amountByDateee: ', amountByDate.data.totalPaidByDate)
-        // setAmount(amountByDate.data.totalPaidByDate)
-        setAmount('0')
-      } catch (error) {
-        console.log('== Error - AmountPaidByDateService: ', error)
-      } finally {
-        setSpinner(false)
-      } */
       await requestAmountByDate(startDate, endDate)
     }
 
@@ -54,7 +43,6 @@ const PaidPaymentsByDate = (props) => {
     try {
       setSpinner(true)
       const amountByDate = await AmountPaidByDateService(formatCurrentDate(startDate, 'YYYY-MM-DD'), formatCurrentDate(endDate, 'YYYY-MM-DD'))
-      // console.log('===== ***** amountByDateee 123: ', amountByDate.data.totalPaidByDate.paymentAmountPaid)
       setAmount(`$${numberFormat(amountByDate.data.totalPaidByDate.paymentAmountPaid, 1)}`)
     } catch (error) {
       console.log('== Error - AmountPaidByDateService: ', error)
@@ -102,7 +90,7 @@ const PaidPaymentsByDate = (props) => {
     <>
       <Spinner
         visible={spinner}
-        textContent={'Abonando...'}
+        textContent={'Consultando ...'}
       />
       <Text style={styles.title}>
         Fecha Inicio:
