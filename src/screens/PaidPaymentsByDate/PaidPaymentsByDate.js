@@ -4,13 +4,15 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Alert
+  Alert,
+  FlatList
 } from 'react-native'
 
 import DateTimePicker from '@react-native-community/datetimepicker'
 import Spinner from 'react-native-loading-spinner-overlay'
 import moment from 'moment'
 
+import ProductItem from '../../components/Products/ProductsItems'
 import { AmountPaidByDateService } from '../../services/Credit/CreditList'
 import {
   formatCurrentDate,
@@ -26,6 +28,7 @@ const PaidPaymentsByDate = (props) => {
   const [endShow, setEndShow] = useState(false)
   const [amount, setAmount] = useState('')
   const [spinner, setSpinner] = useState(false)
+  const [customers, setCustomers] = useState([])
 
   const offset = new Date().getTimezoneOffset() * -1
 
@@ -44,11 +47,22 @@ const PaidPaymentsByDate = (props) => {
       setSpinner(true)
       const amountByDate = await AmountPaidByDateService(formatCurrentDate(startDate, 'YYYY-MM-DD'), formatCurrentDate(endDate, 'YYYY-MM-DD'))
       setAmount(`$${numberFormat(amountByDate.data.totalPaidByDate.paymentAmountPaid, 1)}`)
+      setCustomers(mapData(amountByDate.data.payments))
+      console.log('amountByDate.data.payments: ', amountByDate.data)
     } catch (error) {
       console.log('== Error - AmountPaidByDateService: ', error)
     } finally {
       setSpinner(false)
     }
+  }
+
+  const mapData = (payments) => {
+    return payments.map(data => {
+      return {
+        description: data.salecredit.sale.customer.name + ' - ' + data.salecredit.sale.customer.address,
+        qty: data.paymentAmountPaid
+      }
+    })
   }
 
   const onChangeStartDate = (event, selectedDate) => {
@@ -173,6 +187,15 @@ const PaidPaymentsByDate = (props) => {
           disabled
         />
       </View>
+      <FlatList
+        data={customers}
+        renderItem={item => (
+          <ProductItem 
+            item={item}
+          />
+        )}
+        keyExtractor={item => item.id}
+      />
       <View>
         <TouchableOpacity
           style={styles.loginBtn}

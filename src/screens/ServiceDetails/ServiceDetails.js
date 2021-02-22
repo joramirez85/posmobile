@@ -66,7 +66,7 @@ const ServiceDetails = (props) => {
 
   const mapData = (payments) => {
     return payments.data.payments.map(data => {
-      console.log('000000 data: ', data)
+      // console.log('000000 data: ', data)
       return {
         datePayment: formatCurrentDate(data.paymentDate),
         amountPayment: numberFormat(data.paymentAmount, 2),
