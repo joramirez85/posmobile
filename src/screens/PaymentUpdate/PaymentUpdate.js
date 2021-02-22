@@ -7,7 +7,8 @@ import {
   PayPayment,
   UpdatePayment,
   ReschedulePayment,
-  DetailsPayment
+  DetailsPayment,
+  AddPayment
 } from '../../components/PaymentActions'
 
 const factoryAction = (type, props) => {
@@ -27,6 +28,10 @@ const factoryAction = (type, props) => {
     case 'details':
       return (
         <DetailsPayment props={props} />
+      )
+    case 'agregar':
+      return (
+        <AddPayment props={props} />
       )
   }
 }

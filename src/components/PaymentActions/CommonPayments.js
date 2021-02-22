@@ -62,12 +62,21 @@ const CommonPayment = (props) => {
         ]
       )
     } else {
-      const params = {
-        paymentAmountPaid: payment,
-        amountPaidDate: formatCurrentDate(date, 'YYYY-MM-DD'),
-        isPaid: true,
-        isRescheduled: false,
-        id: props.item.id
+      let params = {}
+      if (props.childType && props.childType === 'add') {
+        params = {
+          payDate: date,
+          amountPaid: payment,
+          saleCreditId: props.saleCreditId
+        }
+      } else {
+        params = {
+          paymentAmountPaid: payment,
+          amountPaidDate: formatCurrentDate(date, 'YYYY-MM-DD'),
+          isPaid: true,
+          isRescheduled: false,
+          id: props.item.id
+        }
       }
   
       console.log('Params: ', params)

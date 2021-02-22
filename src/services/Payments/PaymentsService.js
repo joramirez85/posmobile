@@ -22,6 +22,26 @@ const PayPaymentService = async (data) => {
   return response
 }
 
+const AddPaymentService = async (data) => {
+  console.log('.............. calling AddPaymentService: ', data)
+  const headers = await authHeader()
+  const requestOptions = {
+    method: 'POST',
+    headers,
+    data: {
+      payDate: data.payDate,
+      amountPaid: data.amountPaid,
+      saleCreditId: data.saleCreditId
+    }
+  }
+
+  console.log(`URL: ${URL}/api/v1/payments/${data.id}`)
+
+  const response = await axios(`${URL}/api/v1/payment/add/`, requestOptions)
+  return response
+}
+
 export {
-  PayPaymentService
+  PayPaymentService,
+  AddPaymentService
 }

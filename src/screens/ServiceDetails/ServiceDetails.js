@@ -92,6 +92,19 @@ const ServiceDetails = (props) => {
     props.navigation.navigate('PaymentUpdate', params)
   }
 
+  const addNewPayment = () => {
+    const params = {
+      type: 'agregar',
+      customer: props.route.params.customer,
+      city: props.route.params.city,
+      totalPaidPayments,
+      item: props.route.params.item,
+      saleCreditId: props.route.params.saleCreditId,
+      setReloadFn: setReload
+    }
+    props.navigation.navigate('PaymentUpdate', params)
+  }
+
   return (
     <>
     <Spinner
@@ -136,7 +149,7 @@ const ServiceDetails = (props) => {
           lg
         />
         <CircularButton
-          onPress={() => console.log('three')}
+          onPress={() => addNewPayment()}
           title="Agregar Abono"
           icon={<Entypo name="add-to-list" size={24} color="black" />}
           size={viewPort(60).width}
