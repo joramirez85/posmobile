@@ -100,7 +100,7 @@ const CommonPayment = (props) => {
     setPayment(0)
   }
 
-  // console.log('Params props: ', props)
+  console.log('Params props: ', props)
 
   return (
     <>
@@ -147,31 +147,23 @@ const CommonPayment = (props) => {
               timeZoneOffsetInMinutes={offset}
             />
 
-            {/*
-              Platform.OS === 'ios' &&
-              <View style={styles.btnDate}>
-                <TouchableOpacity
-                  style={styles.loginBtn}
-                  onPress={() => setShow(false)}
-                >
-                  <Text style={styles.loginText}> Aceptar </Text>
-                </TouchableOpacity>
-              </View>
-            */}
-
           </View>
         </View>
         }
 
-        <Text style={styles.title}>Abono:</Text>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.inputText}
-            placeholder='$0'
-            placeholderTextColor={Colors.white}
-            onChangeText={handleChangeAmount}
-          />
-        </View>
+        { (!props.hide) && 
+          <>
+            <Text style={styles.title}>Abono:</Text>
+            <View style={styles.inputView}>
+              <TextInput
+                style={styles.inputText}
+                placeholder='$0'
+                placeholderTextColor={Colors.white}
+                onChangeText={handleChangeAmount}
+              />
+            </View>
+          </>
+        }
       </View>
       <View>
         <TouchableOpacity

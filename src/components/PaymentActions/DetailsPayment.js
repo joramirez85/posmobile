@@ -30,6 +30,7 @@ const DetailsPayment = (props) => {
 
   const totalpaid = paymentAmountPaid + amountInitPaymentForCredit
   
+  console.log('paymentAmountPaid: ', paymentAmountPaid)
   console.log('==== props.props.route.params  ITEM : ', props.props.route.params)
 
   return (

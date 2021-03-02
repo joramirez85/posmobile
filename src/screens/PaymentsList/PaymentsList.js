@@ -78,6 +78,10 @@ const PaymentsList = (props) => {
     props.navigation.navigate('PaidPaymentsByDate', params)
   }
 
+  const paymentsDayList = () => {
+    props.navigation.navigate('PaymentsDayList')
+  }
+
   return (
     <>
       <Spinner
@@ -126,6 +130,14 @@ const PaymentsList = (props) => {
           size={viewPort(60).width}
           lg
         />
+        <CircularButton
+          onPress={() => paymentsDayList()}
+          title="Cobranza Diaria"
+          icon={<MaterialCommunityIcons name="details" size={24} color="black" />}
+          size={viewPort(60).width}
+          lg
+        />
+        
       </View>
     </>
   )

@@ -41,7 +41,23 @@ const AddPaymentService = async (data) => {
   return response
 }
 
+const PaymentsDayService = async (startDate) => {
+  console.log('.............. calling PaymentsDayService: ', startDate)
+  const headers = await authHeader()
+  const requestOptions = {
+    method: 'GET',
+    headers,
+    params: {
+      startDate
+    }
+  }
+
+  const response = await axios(`${URL}/api/v1/paymentscurrent/`, requestOptions)
+  return response
+}
+
 export {
   PayPaymentService,
-  AddPaymentService
+  AddPaymentService,
+  PaymentsDayService
 }
