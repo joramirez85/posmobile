@@ -29,6 +29,9 @@ const PaidPaymentsByDate = (props) => {
   const [amount, setAmount] = useState('')
   const [spinner, setSpinner] = useState(false)
   const [customers, setCustomers] = useState([])
+  // const [paymentsCustomers, setPaymentsCustomers] = useState([])
+  const [unique, setUnique] = useState(0)
+
 
   const offset = new Date().getTimezoneOffset() * -1
 
@@ -48,6 +51,8 @@ const PaidPaymentsByDate = (props) => {
       const amountByDate = await AmountPaidByDateService(formatCurrentDate(startDate, 'YYYY-MM-DD'), formatCurrentDate(endDate, 'YYYY-MM-DD'))
       setAmount(`$${numberFormat(amountByDate.data.totalPaidByDate.paymentAmountPaid, 1)}`)
       setCustomers(mapData(amountByDate.data.payments))
+      // setPaymentsCustomers(amountByDate.data.payments)
+      getTotalCustomersPaid(amountByDate.data.payments)
       console.log('amountByDate.data.payments: ', amountByDate.data)
     } catch (error) {
       console.log('== Error - AmountPaidByDateService: ', error)
@@ -90,7 +95,6 @@ const PaidPaymentsByDate = (props) => {
 
     console.log('birthDateUTC.toDate(): ', birthDateUTC.add(offsetInHours, 'h').toDate())
 
-
     setEndShow(Platform.OS === 'ios')
     setEndDate(selectedDate)
   }
@@ -98,6 +102,13 @@ const PaidPaymentsByDate = (props) => {
   const handlePaymentPaid = async () => {
     console.log('handlePaymentPaid')
     await requestAmountByDate()
+  }
+  
+  const getTotalCustomersPaid = (paymentsCustomers) => {
+    const uniquePaidCustomer = new Set(paymentsCustomers.map(paymentCustomer => paymentCustomer.salecredit._id))
+    console.log('=========== uniquePaidCustomer: ', uniquePaidCustomer)
+    console.log('=========== customers: ', customers)
+    setUnique(uniquePaidCustomer.size)
   }
 
   return (
@@ -187,6 +198,8 @@ const PaidPaymentsByDate = (props) => {
           disabled
         />
       </View>
+      <Text style={styles.title}>Total de abonos: {customers.length}</Text>
+      <Text style={styles.title}>Cuentas abonadas: {unique}</Text>
       <FlatList
         data={customers}
         renderItem={item => (

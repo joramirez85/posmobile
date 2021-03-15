@@ -5,7 +5,7 @@ import {authHeader} from '../../utils/utils'
 const URL = 'http://ecommerceeasy.club:8085'
 
 // Local
-// const URL = 'http://192.168.1.81:8085'
+// const URL = 'http://192.168.1.72:8085'
 
 const PayPaymentService = async (data) => {
   console.log('.............. calling PayPaymentService: ', data)
@@ -35,8 +35,6 @@ const AddPaymentService = async (data) => {
     }
   }
 
-  console.log(`URL: ${URL}/api/v1/payments/${data.id}`)
-
   const response = await axios(`${URL}/api/v1/payment/add/`, requestOptions)
   return response
 }
@@ -56,8 +54,22 @@ const PaymentsDayService = async (startDate) => {
   return response
 }
 
+const ReschedulePaymentService = async (data) => {
+  console.log('.............. calling ReschedulePaymentService: ', data)
+  const headers = await authHeader()
+  const requestOptions = {
+    method: 'PUT',
+    headers,
+    data
+  }
+
+  const response = await axios(`${URL}/api/v1/payment/${data.id}`, requestOptions)
+  return response
+}
+
 export {
   PayPaymentService,
   AddPaymentService,
-  PaymentsDayService
+  PaymentsDayService,
+  ReschedulePaymentService
 }

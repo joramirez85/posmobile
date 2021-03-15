@@ -48,7 +48,8 @@ const CommonPayment = (props) => {
   const handlePayment = async () => {
     console.log('Calling handlePayment - date: ', formatCurrentDate(date, 'YYYY-MM-DD'))
     console.log('Calling handlePayment - payment: ', payment)
-    if (payment === 0) {
+    console.log('props.childType: ', props.childType)
+    if (payment === 0 && props.childType !== 'reschedule') {
       Alert.alert(
         'Campo Vacio',
         'Por favor ingresa el abono',
@@ -68,6 +69,14 @@ const CommonPayment = (props) => {
           payDate: date,
           amountPaid: payment,
           saleCreditId: props.saleCreditId
+        }
+      } else if (props.childType && props.childType === 'reschedule') {
+        console.log('************************* reschedule')
+        params = {
+          id: props.item.id,
+          paymentRescheduledDate: date,
+          isPaid: false,
+          isRescheduled: true,
         }
       } else {
         params = {

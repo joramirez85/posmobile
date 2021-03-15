@@ -5,7 +5,7 @@ import {authHeader} from '../../utils/utils'
 const URL = 'http://ecommerceeasy.club:8085'
 
 // Local
-// const URL = 'http://192.168.1.81:8085'
+// const URL = 'http://192.168.1.72:8085'
 
 const CreditListService = async () => {
   console.log('.... calling CreditListService: ')
